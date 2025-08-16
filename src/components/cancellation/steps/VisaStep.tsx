@@ -9,11 +9,15 @@ const VisaStep: React.FC = () => {
     visaType,
     setHasImmigrationLawyer,
     setVisaType,
-    setCurrentStep
+    setCurrentStep,
+    updateCancellation,
+    markPendingCancellation
   } = useCancellationContext();
   
-  const handleComplete = () => {
+  const handleComplete = async () => {
     if (hasImmigrationLawyer !== null && visaType.trim()) {
+      await updateCancellation({ has_immigration_lawyer: hasImmigrationLawyer, visa_type: visaType });
+      await markPendingCancellation();
       setCurrentStep('completed');
     }
   };

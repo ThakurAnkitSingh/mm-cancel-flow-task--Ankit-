@@ -12,14 +12,21 @@ const CongratsStep: React.FC = () => {
     setRolesApplied,
     setCompaniesEmailed,
     setCompaniesInterviewed,
-    setCurrentStep
+    setCurrentStep,
+    updateCancellation
   } = useCancellationContext();
   
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (foundJobWithMigrateMate !== null && 
         rolesApplied !== null && 
         companiesEmailed !== null && 
         companiesInterviewed !== null) {
+      await updateCancellation({
+        roles_applied: rolesApplied,
+        companies_emailed: companiesEmailed,
+        companies_interviewed: companiesInterviewed,
+        found_job_with_migrate_mate: foundJobWithMigrateMate
+      });
       setCurrentStep('feedback');
     }
   };

@@ -1,17 +1,16 @@
 import React from 'react';
 import { useCancellationContext } from '@/contexts/CancellationContext';
 import Button from '../shared/Button';
-import { getDownsellPrice, formatCurrency } from '@/utils/cancellation';
-import { MOCK_SUBSCRIPTION } from '@/constants/cancellation';
+import { formatCurrency } from '@/utils/cancellation';
 
 const DownsellStep: React.FC = () => {
   const {
     setAcceptedDownsell,
-    setCurrentStep
+    setCurrentStep,
+    getDownsellDisplay
   } = useCancellationContext();
   
-  const originalPrice = MOCK_SUBSCRIPTION.monthly_price / 100;
-  const downsellPrice = getDownsellPrice(MOCK_SUBSCRIPTION.monthly_price);
+  const { originalPrice, downsellPrice } = getDownsellDisplay();
   
   const handleAcceptDownsell = () => {
     setAcceptedDownsell(true);

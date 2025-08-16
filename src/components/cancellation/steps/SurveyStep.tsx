@@ -10,20 +10,28 @@ const SurveyStep: React.FC = () => {
     setCompaniesEmailedSurvey,
     setCompaniesInterviewedSurvey,
     setAcceptedDownsell,
-    setCurrentStep
+    setCurrentStep,
+    updateCancellation,
+    getDownsellDisplay
   } = useCancellationContext();
   
   const isFormComplete = rolesAppliedSurvey !== null && 
                         companiesEmailedSurvey !== null && 
                         companiesInterviewedSurvey !== null;
   
-  const handleGetDiscount = () => {
+  const handleGetDiscount = async () => {
     setAcceptedDownsell(true);
+    await updateCancellation({ accepted_downsell: true });
     setCurrentStep('downsell_completed');
   };
   
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (isFormComplete) {
+      await updateCancellation({
+        roles_applied: rolesAppliedSurvey,
+        companies_emailed: companiesEmailedSurvey,
+        companies_interviewed: companiesInterviewedSurvey
+      });
       setCurrentStep('reason_selection');
     }
   };
@@ -103,7 +111,7 @@ const SurveyStep: React.FC = () => {
             onClick={handleGetDiscount}
             className="w-full py-3 px-6 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-semibold"
           >
-            Get 50% off | $12.50 <span className="text-green-200 line-through">$25</span>
+            {(() => { const { originalPrice, downsellPrice } = getDownsellDisplay(); return `Get 50% off | $${downsellPrice} `; })()} <span className="text-green-200 line-through">{(() => { const { originalPrice } = getDownsellDisplay(); return `$${originalPrice}`; })()}</span>
           </button>
           <button
             onClick={handleContinue}

@@ -46,5 +46,26 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# supabase
-supabase/
+# supabase local artifacts (keep migrations/config but ignore runtime state)
+supabase/.branches/
+supabase/.temp/
+**/supabase/.branches/
+**/supabase/.temp/
+docker-compose*.yml
+**/.supabase/**
+
+# lockfiles can be committed; comment out to include
+# package-lock.json
+
+# OS/editor/project noise
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+Thumbs.db
+
+# local dev artifacts
+.turbo/
+*.local
+*.log
+

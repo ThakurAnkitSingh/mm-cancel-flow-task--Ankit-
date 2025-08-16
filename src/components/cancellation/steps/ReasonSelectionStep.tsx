@@ -8,23 +8,25 @@ const ReasonSelectionStep: React.FC = () => {
     setCancellationReason,
     setReasonFollowUpText,
     setAcceptedDownsell,
-    setCurrentStep
+    setCurrentStep,
+    updateCancellation,
+    markPendingCancellation
   } = useCancellationContext();
   
-  const onClose = () => {
-    setAcceptedDownsell(true);
-    // In real app, this would save to database and close
-    window.location.reload();
-  };
-  
-  const handleCompleteClick = () => {
+  const handleCompleteClick = async () => {
     if (isReasonFollowUpComplete()) {
+      await updateCancellation({
+        reason: cancellationReason,
+        feedback: reasonFollowUpText
+      });
+      await markPendingCancellation();
       setCurrentStep('completed');
     }
   };
  
-  const handleGetDiscount = () => {
+  const handleGetDiscount = async () => {
     setAcceptedDownsell(true);
+    await updateCancellation({ accepted_downsell: true });
     setCurrentStep('downsell_completed');
   };
   

@@ -8,11 +8,13 @@ const FeedbackStep: React.FC = () => {
   const {
     feedback,
     setFeedback,
-    setCurrentStep
+    setCurrentStep,
+    updateCancellation
   } = useCancellationContext();
   
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (feedback.length >= MIN_FEEDBACK_LENGTH) {
+      await updateCancellation({ feedback });
       setCurrentStep('visa');
     }
   };
