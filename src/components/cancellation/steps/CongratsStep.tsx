@@ -64,7 +64,7 @@ const CongratsStep: React.FC = () => {
           <div className="space-y-4">
             <SurveyQuestion
               question="How many roles did you apply for through MigrateMate?*"
-              options={SURVEY_OPTIONS.roles}
+              options={[...SURVEY_OPTIONS.roles]}
               value={rolesApplied}
               onChange={(index) => setRolesApplied(Number(index))}
               variant="blue"
@@ -73,7 +73,7 @@ const CongratsStep: React.FC = () => {
             
             <SurveyQuestion
               question="How many companies did you email directly?*"
-              options={SURVEY_OPTIONS.companies}
+              options={[...SURVEY_OPTIONS.companies]}
               value={companiesEmailed}
               onChange={(index) => setCompaniesEmailed(Number(index))}
               variant="blue"
@@ -82,7 +82,7 @@ const CongratsStep: React.FC = () => {
             
             <SurveyQuestion
               question="How many different companies did you interview with?*"
-              options={SURVEY_OPTIONS.interviews}
+              options={[...SURVEY_OPTIONS.interviews]}
               value={companiesInterviewed}
               onChange={(index) => setCompaniesInterviewed(Number(index))}
               variant="blue"

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import CancellationFlow from '@/components/CancellationFlow';
+// import CancellationFlow from '@/components/CancellationFlow';
+import CancellationFlow from '@/components/cancellation/CancellationFlowRefactored';
 
 // Mock user data for UI display
 const mockUser = {

@@ -60,7 +60,7 @@ const SurveyStep: React.FC = () => {
               
               <SurveyQuestion
                 question="How many companies did you email directly?"
-                options={SURVEY_OPTIONS.companies}
+                options={[...SURVEY_OPTIONS.companies]}
                 value={companiesEmailedSurvey}
                 onChange={(value) => setCompaniesEmailedSurvey(String(value))}
                 underlineWord="email"
@@ -68,7 +68,7 @@ const SurveyStep: React.FC = () => {
               
               <SurveyQuestion
                 question="How many different companies did you interview with?"
-                options={SURVEY_OPTIONS.interviews}
+                options={[...SURVEY_OPTIONS.interviews]}
                 value={companiesInterviewedSurvey}
                 onChange={(value) => setCompaniesInterviewedSurvey(String(value))}
                 underlineWord="interview"
@@ -126,7 +126,7 @@ const SurveyStep: React.FC = () => {
               
               <SurveyQuestion
                 question="How many companies did you email directly?"
-                options={SURVEY_OPTIONS.companies}
+                options={[...SURVEY_OPTIONS.companies]}
                 value={companiesEmailedSurvey}
                 onChange={(value) => setCompaniesEmailedSurvey(String(value))}
                 underlineWord="email"
@@ -134,7 +134,7 @@ const SurveyStep: React.FC = () => {
               
               <SurveyQuestion
                 question="How many different companies did you interview with?"
-                options={SURVEY_OPTIONS.interviews}
+                options={[...SURVEY_OPTIONS.interviews]}
                 value={companiesInterviewedSurvey}
                 onChange={(value) => setCompaniesInterviewedSurvey(String(value))}
                 underlineWord="interview"

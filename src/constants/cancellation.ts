@@ -22,3 +22,11 @@ export const PRICE_DISCOUNTS = {
 } as const;
 
 export const MIN_FEEDBACK_LENGTH = 25;
+
+export const CANCELLATION_REASONS = [
+  'Too expensive',
+  'Platform not helpful',
+  'Not enough relevant jobs',
+  'Decided not to move',
+  'Other'
+] as const;
