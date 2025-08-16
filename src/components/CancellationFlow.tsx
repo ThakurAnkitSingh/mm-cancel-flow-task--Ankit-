@@ -1735,7 +1735,7 @@ export default function CancellationFlow({ isOpen, onClose }: CancellationFlowPr
                       <div className="space-y-4">
                         <div>
                           <label className="block text-[#41403D] mb-2">
-                            How many roles did you apply for through MigrateMate?*
+                            How many roles did you <u>apply</u> for through MigrateMate?*
                           </label>
                           <div className="grid grid-cols-4 gap-2">
                             {["0", "1-5", "6-20", "20+"].map((option, index) => (
@@ -1756,7 +1756,7 @@ export default function CancellationFlow({ isOpen, onClose }: CancellationFlowPr
 
                         <div>
                           <label className="block text-[#41403D] mb-2">
-                            How many companies did you email directly?*
+                            How many companies did you <u>email</u> directly?*
                           </label>
                           <div className="grid grid-cols-4 gap-2">
                             {["0", "1-5", "6-20", "20+"].map((option, index) => (
@@ -1777,7 +1777,7 @@ export default function CancellationFlow({ isOpen, onClose }: CancellationFlowPr
 
                         <div>
                           <label className="block text-[#41403D] mb-2">
-                            How many different companies did you interview with?*
+                            How many different companies did you <u>interview</u> with?*
                           </label>
                           <div className="grid grid-cols-4 gap-2">
                             {["0", "1-2", "3-5", "5+"].map((option, index) => (
