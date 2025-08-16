@@ -50,6 +50,7 @@ export interface CancellationFlowState {
   acceptedDownsell: boolean | null;
   cancellationReason: string | null;
   reasonFollowUpText: string;
+  hasFoundJob: boolean;
 }
 
 export const CANCELLATION_REASONS = [

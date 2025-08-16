@@ -17,7 +17,8 @@ import {
   SurveyStep,
   ReasonSelectionStep,
   CompletedStep,
-  DownsellCompletedStep
+  DownsellCompletedStep,
+  JobRecommendationsStep
 } from './steps';
 
 const CancellationFlowContent: React.FC<CancellationFlowProps> = ({ isOpen, onClose }) => {
@@ -77,18 +78,30 @@ const CancellationFlowContent: React.FC<CancellationFlowProps> = ({ isOpen, onCl
     );
   }
   
+  if (currentStep === 'job_recommendations') {
+    return (
+      <ModalLayout isOpen={isOpen} showImage={false}>
+        <JobRecommendationsStep onClose={onClose} />
+      </ModalLayout>
+    );
+  }
+  
   if (currentStep === 'survey') {
     return (
-      <ModalLayout isOpen={isOpen} imageHeight="400px" imageMarginTop="15px">
-        <StepHeader
-          title="Subscription Cancellation"
-          onBack={goBack}
-          onClose={onClose}
-          currentStep={stepInfo.step}
-          totalSteps={stepInfo.total}
-          showStepIndicator={true}
-          centerTitle={true}
-        />
+      <ModalLayout
+        isOpen={isOpen}
+        header={
+          <StepHeader
+            title="Subscription Cancellation"
+            onBack={goBack}
+            onClose={onClose}
+            currentStep={stepInfo.step}
+            totalSteps={stepInfo.total}
+            showStepIndicator={true}
+            centerTitle={true}
+          />
+        }
+      >
         <SurveyStep />
       </ModalLayout>
     );
@@ -96,16 +109,20 @@ const CancellationFlowContent: React.FC<CancellationFlowProps> = ({ isOpen, onCl
   
   if (currentStep === 'reason_selection') {
     return (
-      <ModalLayout isOpen={isOpen} imageHeight="auto" imageMarginTop="25px">
-        <StepHeader
-          title="Subscription Cancellation"
-          onBack={goBack}
-          onClose={onClose}
-          currentStep={stepInfo.step}
-          totalSteps={stepInfo.total}
-          showStepIndicator={true}
-          centerTitle={true}
-        />
+      <ModalLayout
+        isOpen={isOpen}
+        header={
+          <StepHeader
+            title="Subscription Cancellation"
+            onBack={goBack}
+            onClose={onClose}
+            currentStep={stepInfo.step}
+            totalSteps={stepInfo.total}
+            showStepIndicator={true}
+            centerTitle={true}
+          />
+        }
+      >
         <ReasonSelectionStep />
       </ModalLayout>
     );

@@ -1,10 +1,5 @@
 import React from 'react';
 import { useCancellationContext } from '@/contexts/CancellationContext';
-import Button from '../shared/Button';
-import RadioGroup from '../shared/RadioGroup';
-import TextArea from '../shared/TextArea';
-import { CANCELLATION_REASONS, MOCK_SUBSCRIPTION } from '@/constants/cancellation';
-import { getDownsellPrice, formatCurrency, isReasonFollowUpComplete } from '@/utils/cancellation';
 
 const ReasonSelectionStep: React.FC = () => {
   const {
@@ -22,16 +17,26 @@ const ReasonSelectionStep: React.FC = () => {
     window.location.reload();
   };
   
-  const downsellPrice = getDownsellPrice(MOCK_SUBSCRIPTION.monthly_price);
-  const originalPrice = MOCK_SUBSCRIPTION.monthly_price / 100;
-  
   const handleCompleteClick = () => {
-    if (isReasonFollowUpComplete(cancellationReason, reasonFollowUpText)) {
+    if (isReasonFollowUpComplete()) {
       setCurrentStep('completed');
     }
   };
+ 
+  const handleGetDiscount = () => {
+    setAcceptedDownsell(true);
+    setCurrentStep('downsell_completed');
+  };
   
-  const isComplete = isReasonFollowUpComplete(cancellationReason, reasonFollowUpText);
+  const isReasonFollowUpComplete = () => {
+    if (!cancellationReason) return false;
+    
+    if (cancellationReason === 'Too expensive') {
+      return reasonFollowUpText.trim().length > 0; // Any amount entered
+    } else {
+      return reasonFollowUpText.trim().length >= 25; // Minimum 25 characters for textareas
+    }
+  };
   
   const renderFollowUpQuestion = () => {
     switch (cancellationReason) {
@@ -56,51 +61,81 @@ const ReasonSelectionStep: React.FC = () => {
         
       case 'Platform not helpful':
         return (
-          <TextArea
-            label="What can we change to make the platform more helpful?*"
-            error="Please enter at least 25 characters so we can understand your feedback*"
-            value={reasonFollowUpText}
-            onChange={(e) => setReasonFollowUpText(e.target.value)}
-            rows={4}
-            showCharCount
-            minLength={25}
-          />
+          <>
+            <p className="text-[#41403D] font-medium mb-3">
+              What can we change to make the platform more helpful?*
+            </p>
+            <p className="text-red-500 text-sm mb-3">
+              Please enter at least 25 characters so we can understand your feedback*
+            </p>
+            <textarea
+              placeholder=""
+              rows={4}
+              value={reasonFollowUpText}
+              onChange={(e) => setReasonFollowUpText(e.target.value)}
+              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-black"
+            />
+            <p className="text-sm text-gray-500 text-right mt-1">
+              Min 25 characters ({reasonFollowUpText.length}/25)
+            </p>
+          </>
         );
         
       case 'Not enough relevant jobs':
         return (
-          <TextArea
-            label="In which way can we make the jobs more relevant?*"
-            value={reasonFollowUpText}
-            onChange={(e) => setReasonFollowUpText(e.target.value)}
-            rows={4}
-            showCharCount
-            minLength={25}
-          />
+          <>
+            <p className="text-[#41403D] font-medium mb-3">
+              In which way can we make the jobs more relevant?*
+            </p>
+            <textarea
+              placeholder=""
+              rows={4}
+              value={reasonFollowUpText}
+              onChange={(e) => setReasonFollowUpText(e.target.value)}
+              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-black"
+            />
+            <p className="text-sm text-gray-500 text-right mt-1">
+              Min 25 characters ({reasonFollowUpText.length}/25)
+            </p>
+          </>
         );
         
       case 'Decided not to move':
         return (
-          <TextArea
-            label="What changed for you to decide to not move?*"
-            value={reasonFollowUpText}
-            onChange={(e) => setReasonFollowUpText(e.target.value)}
-            rows={4}
-            showCharCount
-            minLength={25}
-          />
+          <>
+            <p className="text-[#41403D] font-medium mb-3">
+              What changed for you to decide to not move?*
+            </p>
+            <textarea
+              placeholder=""
+              rows={4}
+              value={reasonFollowUpText}
+              onChange={(e) => setReasonFollowUpText(e.target.value)}
+              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-black"
+            />
+            <p className="text-sm text-gray-500 text-right mt-1">
+              Min 25 characters ({reasonFollowUpText.length}/25)
+            </p>
+          </>
         );
         
       case 'Other':
         return (
-          <TextArea
-            label="What would have helped you the most?*"
-            value={reasonFollowUpText}
-            onChange={(e) => setReasonFollowUpText(e.target.value)}
-            rows={4}
-            showCharCount
-            minLength={25}
-          />
+          <>
+            <p className="text-[#41403D] font-medium mb-3">
+              What would have helped you the most?*
+            </p>
+            <textarea
+              placeholder=""
+              rows={4}
+              value={reasonFollowUpText}
+              onChange={(e) => setReasonFollowUpText(e.target.value)}
+              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-black"
+            />
+            <p className="text-sm text-gray-500 text-right mt-1">
+              Min 25 characters ({reasonFollowUpText.length}/25)
+            </p>
+          </>
         );
         
       default:
@@ -109,153 +144,99 @@ const ReasonSelectionStep: React.FC = () => {
   };
   
   return (
-    <>
-      {/* Desktop Layout */}
-      <div className="hidden lg:flex">
-        {/* Left Content */}
-        <div className="flex-1 p-8 pr-6">
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-3xl font-bold text-[#41403D] leading-tight mb-2">
-                What&apos;s the main reason for cancelling?
-              </h3>
-              <p className="text-[#41403D] text-sm mb-4">
-                Please take a minute to let us know why:
-              </p>
-              {!cancellationReason && (
-                <p className="text-red-500 text-sm mb-6">
-                  To help us understand your experience, please select a reason for cancelling*
-                </p>
-              )}
-            </div>
+    <div className="flex-1 p-8 pr-6">
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-3xl font-bold text-[#41403D] leading-tight mb-2">
+            What&apos;s the main reason for cancelling?
+          </h3>
+          <p className="text-[#41403D] text-sm mb-4">
+            Please take a minute to let us know why:
+          </p>
+          {!cancellationReason && (
+            <p className="text-red-500 text-sm mb-6">
+              To help us understand your experience, please select a reason for cancelling*
+            </p>
+          )}
+        </div>
 
-            {/* Radio Options or Selected + Follow-up */}
-            <div className="space-y-4 mb-8">
-              {!cancellationReason ? (
-                <RadioGroup
+        {/* Radio Button Options */}
+        <div className="space-y-4 mb-8">
+          {!cancellationReason ? (
+            // Show all options when none selected
+            [
+              'Too expensive',
+              'Platform not helpful',
+              'Not enough relevant jobs',
+              'Decided not to move',
+              'Other'
+            ].map((reason) => (
+              <label key={reason} className="flex items-center cursor-pointer">
+                <input
+                  type="radio"
                   name="cancellation_reason"
-                  options={[...CANCELLATION_REASONS]}
-                  value={cancellationReason}
-                  onChange={setCancellationReason}
+                  value={reason}
+                  checked={cancellationReason === reason}
+                  onChange={(e) => {
+                    setCancellationReason(e.target.value);
+                    setReasonFollowUpText(''); // Reset follow-up text when changing reason
+                  }}
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                 />
-              ) : (
-                <div className="space-y-4">
-                  <RadioGroup
+                <span className="ml-3 text-[#41403D] font-medium">{reason}</span>
+              </label>
+            ))
+          ) : (
+            // Show only selected option and follow-up
+            <div className="space-y-4">
+              <label className="flex items-center cursor-pointer">
+                <div className="relative flex items-center">
+                  <input
+                    type="radio"
                     name="cancellation_reason"
-                    options={[cancellationReason]}
                     value={cancellationReason}
-                    onChange={() => {}}
-                    customStyle={true}
+                    checked={true}
+                    readOnly
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 opacity-0"
                   />
-                  
-                  {/* Follow-up question */}
-                  <div className="mt-4">
-                    {renderFollowUpQuestion()}
+                  {/* Custom checked state indicator - perfectly positioned */}
+                  <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-gray-800 border border-gray-800 rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                   </div>
                 </div>
-              )}
+                <span className="ml-3 text-[#41403D] font-medium">{cancellationReason}</span>
+              </label>
+              
+              {/* Follow-up question based on selection */}
+              <div className="mt-4">
+                {renderFollowUpQuestion()}
+              </div>
             </div>
-
-            {/* Buttons */}
-            <div className="space-y-3">
-              <Button
-                onClick={onClose}
-                variant="success"
-                fullWidth
-                className="font-semibold"
-              >
-                Get 50% off | {formatCurrency(downsellPrice)} <span className="text-green-200 line-through">{formatCurrency(originalPrice)}</span>
-              </Button>
-              <Button
-                onClick={handleCompleteClick}
-                disabled={!isComplete}
-                variant={isComplete ? "danger" : "secondary"}
-                fullWidth
-              >
-                Complete cancellation
-              </Button>
-            </div>
-          </div>
+          )}
         </div>
 
-        {/* Right Image handled by parent */}
-        <div className="w-[400px] relative overflow-hidden rounded-2xl mb-8 mr-5 self-stretch" style={{ marginTop: '25px' }}>
-          {/* Image handled by parent ModalLayout */}
-        </div>
-      </div>
-
-      {/* Mobile Layout */}
-      <div className="lg:hidden">
-        <div className="p-4">
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-xl font-bold text-[#41403D] leading-tight mb-3">
-                What&apos;s the main reason for cancelling?
-              </h3>
-              <p className="text-[#41403D] text-sm mb-3">
-                Please take a minute to let us know why:
-              </p>
-              {!cancellationReason && (
-                <p className="text-red-500 text-sm mb-4">
-                  To help us understand your experience, please select a reason for cancelling*
-                </p>
-              )}
-            </div>
-
-            {/* Radio Options */}
-            <div className="space-y-3 mb-6">
-              {!cancellationReason ? (
-                <RadioGroup
-                  name="cancellation_reason"
-                  options={[...CANCELLATION_REASONS]}
-                  value={cancellationReason}
-                  onChange={setCancellationReason}
-                  className="text-sm"
-                />
-              ) : (
-                <div className="space-y-3">
-                  <RadioGroup
-                    name="cancellation_reason"
-                    options={[cancellationReason]}
-                    value={cancellationReason}
-                    onChange={() => {}}
-                    customStyle={true}
-                    className="text-sm"
-                  />
-                  
-                  {/* Follow-up question */}
-                  <div className="mt-3">
-                    {renderFollowUpQuestion()}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Buttons */}
-            <div className="space-y-3">
-              <Button
-                onClick={onClose}
-                variant="success"
-                fullWidth
-                size="sm"
-                className="font-semibold"
-              >
-                Get 50% off | {formatCurrency(downsellPrice)} <span className="text-green-200 line-through">{formatCurrency(originalPrice)}</span>
-              </Button>
-              <Button
-                onClick={handleCompleteClick}
-                disabled={!isComplete}
-                variant={isComplete ? "danger" : "secondary"}
-                fullWidth
-                size="sm"
-              >
-                Complete cancellation
-              </Button>
-            </div>
-          </div>
+        {/* Buttons */}
+        <div className="space-y-3">
+          <button
+            onClick={handleGetDiscount}
+            className="w-full py-3 px-6 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-semibold"
+          >
+            Get 50% off | $12.50 <span className="text-green-200 line-through">$25</span>
+          </button>
+          <button
+            onClick={handleCompleteClick}
+            disabled={!isReasonFollowUpComplete()}
+            className={`w-full py-3 px-6 rounded-lg transition-colors font-medium ${
+              isReasonFollowUpComplete()
+                ? 'bg-red-500 text-white hover:bg-red-600'
+                : 'bg-gray-200 text-[#41403D] cursor-not-allowed opacity-60'
+            }`}
+          >
+            Complete cancellation
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

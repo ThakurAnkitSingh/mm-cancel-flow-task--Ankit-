@@ -7,4 +7,5 @@ export { default as SurveyStep } from './SurveyStep';
 export { default as ReasonSelectionStep } from './ReasonSelectionStep';
 export { default as CompletedStep } from './CompletedStep';
 export { default as DownsellCompletedStep } from './DownsellCompletedStep';
+export { default as JobRecommendationsStep } from './JobRecommendationsStep';
 // Note: JobRecommendationsStep is complex and will be created separately

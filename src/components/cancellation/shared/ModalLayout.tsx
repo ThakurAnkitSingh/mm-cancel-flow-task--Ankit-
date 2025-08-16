@@ -3,15 +3,17 @@ import Image from 'next/image';
 
 interface ModalLayoutProps {
   children: React.ReactNode;
+  header?: React.ReactNode;
   showImage?: boolean;
-  imageHeight?: string;
-  imageMarginTop?: string;
+  imageHeight?: string; // kept for backward compat but not used when header is present
+  imageMarginTop?: string; // kept for backward compat
   mobileImageHeight?: string;
   isOpen: boolean;
 }
 
 const ModalLayout: React.FC<ModalLayoutProps> = ({
   children,
+  header,
   showImage = true,
   imageHeight = 'auto',
   imageMarginTop = '25px',
@@ -25,6 +27,9 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
       <div className="bg-white rounded-t-2xl lg:rounded-2xl shadow-xl w-full max-w-7xl lg:w-[1300px] mt-6 lg:mt-0 flex flex-col" style={{ height: 'auto' }}>
         {/* Desktop Layout */}
         <div className="hidden lg:flex flex-col h-full">
+          {/* Header across full width */}
+          {header}
+
           <div className="flex flex-1">
             {/* Content */}
             <div className="flex-1 flex flex-col">
@@ -34,8 +39,8 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
             {/* Right Image */}
             {showImage && (
               <div 
-                className="w-[400px] relative overflow-hidden rounded-2xl m-5 self-start" 
-                style={{ height: imageHeight, marginTop: imageMarginTop }}
+                className="w-[400px] relative overflow-hidden rounded-2xl m-5 self-stretch"
+                style={header ? undefined : { height: imageHeight, marginTop: imageMarginTop }}
               >
                 <Image
                   src="/empire-state-compressed.jpg"
@@ -51,6 +56,9 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
         
         {/* Mobile Layout */}
         <div className="lg:hidden flex flex-col">
+          {/* Header across full width */}
+          {header}
+
           {/* Mobile Image on top */}
           {showImage && (
             <div className={`h-${mobileImageHeight} relative overflow-hidden rounded-2xl mt-2 mx-5`}>

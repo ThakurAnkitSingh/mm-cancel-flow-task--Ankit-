@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import { useCancellationContext } from '@/contexts/CancellationContext';
-import StepHeader from '../shared/StepHeader';
 import Button from '../shared/Button';
 
 interface InitialStepProps {
@@ -12,10 +11,12 @@ const InitialStep: React.FC<InitialStepProps> = ({ onClose }) => {
   const { 
     setCurrentStep, 
     setFoundJobWithMigrateMate, 
-    getDownsellVariant 
+    getDownsellVariant,
+    setHasFoundJob 
   } = useCancellationContext();
   
   const handleFoundJob = () => {
+    setHasFoundJob(true);
     setCurrentStep('congrats');
   };
   
@@ -31,11 +32,19 @@ const InitialStep: React.FC<InitialStepProps> = ({ onClose }) => {
   
   return (
     <>
-      <StepHeader 
-        title="Subscription Cancellation" 
-        onClose={onClose}
-        centerTitle={true}
-      />
+      {/* Header */}
+      <div className="flex items-center justify-between p-6">
+        <h2 className="text-lg font-bold text-black flex-1 text-center">Subscription Cancellation</h2>
+        <button
+          onClick={onClose}
+          className="text-gray-400 hover:text-gray-600 ml-4"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div className="border-t border-gray-200"></div>
       
       {/* Desktop Layout */}
       <div className="hidden lg:flex">

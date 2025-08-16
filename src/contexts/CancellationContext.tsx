@@ -26,6 +26,7 @@ interface CancellationContextType extends CancellationFlowState {
   setAcceptedDownsell: (value: boolean | null) => void;
   setCancellationReason: (value: string | null) => void;
   setReasonFollowUpText: (value: string) => void;
+  setHasFoundJob: (value: boolean) => void;
   
   // Computed values
   getDownsellVariant: () => DownsellVariant;
@@ -63,6 +64,7 @@ export const CancellationProvider: React.FC<CancellationProviderProps> = ({ chil
   const [acceptedDownsell, setAcceptedDownsell] = useState<boolean | null>(null);
   const [cancellationReason, setCancellationReason] = useState<string | null>(null);
   const [reasonFollowUpText, setReasonFollowUpText] = useState('');
+  const [hasFoundJob, setHasFoundJob] = useState<boolean>(false);
   
   const getDownsellVariant = useCallback((): DownsellVariant => {
     if (downsellVariant) return downsellVariant;
@@ -87,13 +89,7 @@ export const CancellationProvider: React.FC<CancellationProviderProps> = ({ chil
         setCurrentStep('initial');
         break;
       case 'feedback':
-        if (downsellVariant === 'B' && foundJobWithMigrateMate === false) {
-          setCurrentStep('downsell');
-        } else if (foundJobWithMigrateMate === true) {
-          setCurrentStep('congrats');
-        } else {
-          setCurrentStep('initial');
-        }
+        setCurrentStep('congrats');
         break;
       case 'visa':
         setCurrentStep('feedback');
@@ -104,11 +100,22 @@ export const CancellationProvider: React.FC<CancellationProviderProps> = ({ chil
       case 'reason_selection':
         setCurrentStep('survey');
         break;
-      case 'completed':
-        setCurrentStep('reason_selection');
+      case 'completed': {
+        // If user came from Not yet flow, go back to reason selection
+        if (cancellationReason) {
+          setCurrentStep('reason_selection');
+        } else if (hasFoundJob || foundJobWithMigrateMate !== null) {
+          // Yes flow: go back to visa (previous screen before completion)
+          setCurrentStep('visa');
+        } else {
+          setCurrentStep('initial');
+        }
         break;
+      }
+      default:
+        setCurrentStep('initial');
     }
-  }, [currentStep, downsellVariant, foundJobWithMigrateMate]);
+  }, [currentStep, cancellationReason, hasFoundJob, foundJobWithMigrateMate]);
   
   const resetState = useCallback(() => {
     setCurrentStep('initial');
@@ -152,6 +159,7 @@ export const CancellationProvider: React.FC<CancellationProviderProps> = ({ chil
     acceptedDownsell,
     cancellationReason,
     reasonFollowUpText,
+    hasFoundJob,
     
     // Actions
     setCurrentStep,
@@ -170,7 +178,8 @@ export const CancellationProvider: React.FC<CancellationProviderProps> = ({ chil
     setCancellationReason: handleSetCancellationReason,
     setReasonFollowUpText,
     getDownsellVariant,
-    resetState
+    resetState,
+    setHasFoundJob
   };
   
   return (
