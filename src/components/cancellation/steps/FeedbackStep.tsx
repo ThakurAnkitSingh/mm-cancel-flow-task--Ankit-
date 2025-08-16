@@ -18,8 +18,7 @@ const FeedbackStep: React.FC = () => {
   };
   
   return (
-    <div className="flex-1 p-8">
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div>
           <h3 className="text-2xl font-bold text-[#41403D] mb-4">
             What&apos;s one thing you wish we could&apos;ve helped you with?
@@ -48,7 +47,6 @@ const FeedbackStep: React.FC = () => {
           Continue
         </Button>
       </div>
-    </div>
   );
 };
 

@@ -130,36 +130,26 @@ const CancellationFlowContent: React.FC<CancellationFlowProps> = ({ isOpen, onCl
           showStepIndicator={true}
         />
         
-        {/* Desktop Layout */}
-        <div className="hidden lg:flex">
-          <div className="flex flex-1">
+        {/* Content for other screens */}
+        <div className="flex flex-col lg:flex-row">
+          {/* Left Content */}
+          <div className="flex-1 p-8">
             {currentStep === 'congrats' && <CongratsStep />}
             {currentStep === 'feedback' && <FeedbackStep />}
             {currentStep === 'visa' && <VisaStep />}
             {currentStep === 'downsell' && <DownsellStep />}
-            
-            {/* Right Image */}
-            <div className="lg:w-[400px] h-auto relative m-5 overflow-hidden rounded-2xl">
-              <Image
-                src="/empire-state-compressed.jpg"
-                alt="New York City skyline with Empire State Building"
-                width={400}
-                height={600}
-                className="object-cover h-full"
-                priority
-              />
-            </div>
           </div>
-        </div>
-        
-        {/* Mobile Layout */}
-        <div className="lg:hidden">
-          {/* Mobile content - simplified for brevity */}
-          <div className="p-4">
-            {currentStep === 'congrats' && <CongratsStep />}
-            {currentStep === 'feedback' && <FeedbackStep />}
-            {currentStep === 'visa' && <VisaStep />}
-            {currentStep === 'downsell' && <DownsellStep />}
+          
+          {/* Right Image for desktop */}
+          <div className="hidden lg:block lg:w-[400px] h-auto relative m-5 overflow-hidden rounded-2xl">
+            <Image
+              src="/empire-state-compressed.jpg"
+              alt="New York City skyline with Empire State Building"
+              width={400}
+              height={600}
+              className="object-cover h-full"
+              priority
+            />
           </div>
         </div>
       </div>

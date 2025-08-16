@@ -24,8 +24,7 @@ const DownsellStep: React.FC = () => {
   };
   
   return (
-    <div className="flex-1 p-8">
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div>
           <h3 className="text-2xl font-bold text-[#41403D] mb-4">
             We built this to help you land the job, this makes it a little easier.
@@ -72,7 +71,6 @@ const DownsellStep: React.FC = () => {
           No thanks
         </Button>
       </div>
-    </div>
   );
 };
 

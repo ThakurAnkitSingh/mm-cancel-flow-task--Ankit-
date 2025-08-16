@@ -1,8 +1,6 @@
 import React from 'react';
 import { useCancellationContext } from '@/contexts/CancellationContext';
 import Button from '../shared/Button';
-import SurveyQuestion from '../shared/SurveyQuestion';
-import { SURVEY_OPTIONS } from '@/constants/cancellation';
 
 const CongratsStep: React.FC = () => {
   const {
@@ -32,8 +30,7 @@ const CongratsStep: React.FC = () => {
                         companiesInterviewed !== null;
   
   return (
-    <div className="flex-1 p-8">
-      <div className="flex flex-col h-full justify-between">
+    <div className="flex flex-col h-full justify-between">
         <div className="space-y-6">
           <div>
             <h3 className="text-2xl font-bold text-[#41403D] mb-4">
@@ -42,52 +39,94 @@ const CongratsStep: React.FC = () => {
             <div className="mb-6">
               <p className="text-[#41403D] mb-4">Did you find this job with MigrateMate?*</p>
               <div className="flex space-x-3">
-                <Button
+                <button
                   onClick={() => setFoundJobWithMigrateMate(true)}
-                  variant={foundJobWithMigrateMate === true ? 'primary' : 'secondary'}
-                  fullWidth
+                  className={`w-full px-6 py-2 rounded-lg border transition-colors ${
+                    foundJobWithMigrateMate === true
+                      ? 'bg-blue-600 text-white border-blue-600'
+                      : 'bg-white text-[#41403D] border-gray-300 hover:border-gray-400'
+                  }`}
                 >
                   Yes
-                </Button>
-                <Button
+                </button>
+                <button
                   onClick={() => setFoundJobWithMigrateMate(false)}
-                  variant={foundJobWithMigrateMate === false ? 'primary' : 'secondary'}
-                  fullWidth
+                  className={`w-full px-6 py-2 rounded-lg border transition-colors ${
+                    foundJobWithMigrateMate === false
+                      ? 'bg-blue-600 text-white border-blue-600'
+                      : 'bg-white text-[#41403D] border-gray-300 hover:border-gray-400'
+                  }`}
                 >
                   No
-                </Button>
+                </button>
               </div>
             </div>
           </div>
 
           {/* Survey Questions */}
           <div className="space-y-4">
-            <SurveyQuestion
-              question="How many roles did you apply for through MigrateMate?*"
-              options={[...SURVEY_OPTIONS.roles]}
-              value={rolesApplied}
-              onChange={(index) => setRolesApplied(Number(index))}
-              variant="blue"
-              underlineWord="apply"
-            />
-            
-            <SurveyQuestion
-              question="How many companies did you email directly?*"
-              options={[...SURVEY_OPTIONS.companies]}
-              value={companiesEmailed}
-              onChange={(index) => setCompaniesEmailed(Number(index))}
-              variant="blue"
-              underlineWord="email"
-            />
-            
-            <SurveyQuestion
-              question="How many different companies did you interview with?*"
-              options={[...SURVEY_OPTIONS.interviews]}
-              value={companiesInterviewed}
-              onChange={(index) => setCompaniesInterviewed(Number(index))}
-              variant="blue"
-              underlineWord="interview"
-            />
+            <div>
+              <label className="block text-[#41403D] mb-2">
+                How many roles did you <u>apply</u> for through MigrateMate?*
+              </label>
+              <div className="grid grid-cols-4 gap-2">
+                {["0", "1-5", "6-20", "20+"].map((option, index) => (
+                  <button
+                    key={option}
+                    onClick={() => setRolesApplied(index)}
+                    className={`px-4 py-2 rounded-lg border transition-colors h-10 ${
+                      rolesApplied === index
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'bg-white text-[#41403D] border-gray-300 hover:border-gray-400'
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[#41403D] mb-2">
+                How many companies did you <u>email</u> directly?*
+              </label>
+              <div className="grid grid-cols-4 gap-2">
+                {["0", "1-5", "6-20", "20+"].map((option, index) => (
+                  <button
+                    key={option}
+                    onClick={() => setCompaniesEmailed(index)}
+                    className={`px-4 py-2 rounded-lg border transition-colors h-10 ${
+                      companiesEmailed === index
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'bg-white text-[#41403D] border-gray-300 hover:border-gray-400'
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[#41403D] mb-2">
+                How many different companies did you <u>interview</u> with?*
+              </label>
+              <div className="grid grid-cols-4 gap-2">
+                {["0", "1-2", "3-5", "5+"].map((option, index) => (
+                  <button
+                    key={option}
+                    onClick={() => setCompaniesInterviewed(index)}
+                    className={`px-4 py-2 rounded-lg border transition-colors h-10 ${
+                      companiesInterviewed === index
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'bg-white text-[#41403D] border-gray-300 hover:border-gray-400'
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
         
@@ -102,7 +141,6 @@ const CongratsStep: React.FC = () => {
           </Button>
         </div>
       </div>
-    </div>
   );
 };
 

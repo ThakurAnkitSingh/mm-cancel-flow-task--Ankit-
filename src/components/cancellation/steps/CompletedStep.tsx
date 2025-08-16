@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useCancellationContext } from '@/contexts/CancellationContext';
-import StepHeader from '../shared/StepHeader';
+// import StepHeader from '../shared/StepHeader';
 import StepIndicator from '../shared/StepIndicator';
 import Button from '../shared/Button';
 

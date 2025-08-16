@@ -21,8 +21,7 @@ const VisaStep: React.FC = () => {
   const isFormComplete = hasImmigrationLawyer !== null && visaType.trim().length > 0;
   
   return (
-    <div className="flex-1 p-8">
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div>
           {foundJobWithMigrateMate === true ? (
             <h3 className="text-2xl font-bold text-[#41403D] mb-4">
@@ -120,7 +119,6 @@ const VisaStep: React.FC = () => {
           </Button>
         </div>
       </div>
-    </div>
   );
 };
 
